@@ -3,6 +3,10 @@
 #             HGVS notation (with mutalyzer)             #
 #                                                        #
 ##########################################################
+
+##########################################################
+#        access https://mutalyzer.nl to get HGVS         #
+##########################################################
 mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
   ##########################################################
   #                     known variant                      #
@@ -76,7 +80,7 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
     }
   }
   ##########################################################
-  #                      return output                     #
+  #                    return output                       #
   ##########################################################
   if(is.null(hgvs_protein)){
     hgvs_protein<-matrix(".",nrow = 6, ncol = 2)
@@ -89,4 +93,17 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
       rbind(hgvs_mRna[max(grep(paste(var,collapse="|"),hgvs_mRna[,2])),]),
       rbind(hgvs_protein[min(grep(paste(var,collapse="|"),hgvs_mRna[,2])),])))
   }
+}
+
+##########################################################
+#        apply mutalyzer function to data.frame          #
+##########################################################
+hgvs<-function(variants){
+  mapply(mutalyzer,variants[,"Chr"],variants[,"Position"],variants[,"rs_ID"],
+         variants[,"Ref"],variants[,"Alt"],variants[,"refSeq_mRNA"],
+         variants[,"refSeq_protein"])%>%
+    t()%>%
+    cbind(variants,RefSeq_mRNA=.[,1],HGVS_c=.[,2],
+          RefSeq_protein=.[,3],HGVS_p=.[,4]) %>%
+    select(-refSeq_mRNA,-refSeq_protein,-`1`,-`2`,-`3`,-`4`)
 }
