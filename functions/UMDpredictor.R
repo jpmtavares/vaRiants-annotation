@@ -4,7 +4,7 @@
 #                                                        #
 ##########################################################
 UMDpredictor<-function(genes){
-  transcripts<-read.delim("../sources/GRCh37ENStranscripts.txt",
+  transcripts<-read.delim("./sources/GRCh37ENStranscripts.txt",
                           header = T)
   u<-semi_join(transcripts, as.data.frame(genes), by = c("HGNC_symbol" = "genes"))
   u$url<-paste("http://umd-predictor.eu/transcript_query2.php?name=",
