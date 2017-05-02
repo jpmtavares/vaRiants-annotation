@@ -19,6 +19,7 @@ library(rvest)
 library(readr)
 library(XML)
 library(RCurl)
+library(lubridate)
 #______________________________________________
 # R source files
 #______________________________________________
