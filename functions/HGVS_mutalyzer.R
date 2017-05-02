@@ -25,7 +25,7 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
     ## INSERTION
     if(nchar(Alt)>1){
       #Read and parse html file
-      doc.text <- try(read_html(paste("https://mutalyzer.nl/Position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.character(Position)),"_",as.numeric(as.character(Position)),"ins",sub('.', '', Alt),sep="")) %>%
+      doc.text <- try(read_html(paste("https://mutalyzer.nl/position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.character(Position)),"_",as.numeric(as.character(Position)),"ins",sub('.', '', Alt),sep="")) %>%
                         html_nodes("pre") %>% 
                         html_text()
       )
@@ -38,7 +38,7 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
       ## DELETION
       if(nchar(Ref)>1){
         #Read and parse html file
-        doc.text <- try(read_html(paste("https://mutalyzer.nl/Position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.numeric(as.character(Position))-(nchar(Ref)-2)),"_",as.numeric(as.character(Position)),"del",sub('.', '', Ref),sep="")) %>%
+        doc.text <- try(read_html(paste("https://mutalyzer.nl/position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.numeric(as.character(Position))-(nchar(Ref)-2)),"_",as.numeric(as.character(Position)),"del",sub('.', '', Ref),sep="")) %>%
                           html_nodes("pre") %>% 
                           html_text()
         )
@@ -50,7 +50,7 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
       }else{
         ## SNP
         #Read and parse html file
-        doc.text <- try(read_html(paste("https://mutalyzer.nl/Position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.character(Position)),Ref,"%3E",Alt,sep="")) %>%
+        doc.text <- try(read_html(paste("https://mutalyzer.nl/position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.character(Position)),Ref,"%3E",Alt,sep="")) %>%
                           html_nodes("pre") %>% 
                           html_text()
         )
@@ -67,11 +67,17 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
   ##########################################################
   ## INSERTION
   if(nchar(Alt)>1){
-    var<-c(paste("ins",sub('.', '', Alt),sep=""), paste("ins",reverseDNA(sub('.', '', Alt),complement = T),sep=""))
+    var<-c(paste("ins",sub('.', '', Alt),sep=""),
+           paste("ins",paste(rev(strsplit(sub('.', '', Alt),"")[[1]]),collapse = ""),sep=""),
+           paste("ins",reverseDNA(sub('.', '', Alt)),sep=""), 
+           paste("ins",reverseDNA(sub('.', '', Alt),complement = T),sep=""))
   }else{
     ## DELETION
     if(nchar(Ref)>1){
-      var<-c(paste("del",sub('.', '', Ref),sep=""), paste("del", reverseDNA(sub('.', '', Ref),complement = T),sep=""))
+      var<-c(paste("del",sub('.', '', Ref),sep=""),
+             paste("del",paste(rev(strsplit(sub('.', '', Ref),"")[[1]]),collapse = ""),sep=""),
+             paste("del", reverseDNA(sub('.', '', Ref)),sep=""), 
+             paste("del", reverseDNA(sub('.', '', Ref),complement = T),sep=""))
     }else{
       ## SNP
       var<-c(paste(Ref,">",Alt,sep=""),
@@ -83,15 +89,15 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
   #                    return output                       #
   ##########################################################
   if(is.null(hgvs_protein)){
-    hgvs_protein<-matrix(".",nrow = 6, ncol = 2)
+    hgvs_protein<-matrix(".",nrow = 10, ncol = 2)
   }
   if(is.null(hgvs_mRna)){
-    hgvs_mRna<-matrix(".",nrow = 6, ncol = 2)
+    hgvs_mRna<-matrix(".",nrow = 10, ncol = 2)
     return(c(".",".",".","."))
   }else{
     return(c(#Chr,Position,rs_ID,Ref,Alt,
       rbind(hgvs_mRna[max(grep(paste(var,collapse="|"),hgvs_mRna[,2])),]),
-      rbind(hgvs_protein[min(grep(paste(var,collapse="|"),hgvs_mRna[,2])),])))
+      rbind(hgvs_protein[max(grep(paste(refSeq_protein,collapse="|"),hgvs_protein[,1])),])))
   }
 }
 
