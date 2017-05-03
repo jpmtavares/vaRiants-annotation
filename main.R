@@ -111,12 +111,6 @@ hgvs_anno<-hgvs(trans_anno)
 #_________________________________________
 # NCBI ClinVar
 #_________________________________________
-clinvar<-clinvarTab %>%
-  mutate(CHROM=paste("chr",.$CHROM,sep=""),
-         CLNDBN=gsub("#","_",as.character(.$CLNDBN)),
-         CLNDBN=gsub("'","_",as.character(.$CLNDBN)),
-         CLNDBN=gsub("\\\\x2c",",",as.character(.$CLNDBN))) %>%
-  set_names(c("Chr","Start","rs_ID","Ref","ALT","clinvar_sig","clinvar_disease_name","clinvar_stars")) %>%
 clinvar<-clinvarTab() %>%
   join(hgvs_anno,.) %>%
   select(-c(Start,ALT))
