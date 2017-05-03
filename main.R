@@ -200,8 +200,7 @@ predictions$SPIDEX<-abs(as.numeric(predictions$SPIDEX))
 # GM_freq
 #______________________________________________
 GMfreq<-GM_freq %>%
-  mutate(Chr=paste("chr",.$Chr,sep=""),
-         Position=ifelse(nchar(as.character(Ref))>1,
+  mutate(Position=ifelse(nchar(as.character(Ref))>1,
                          as.numeric(Position)+1,
                          ifelse(nchar(as.character(ALT))>1,
                                 as.numeric(Position)+1,
