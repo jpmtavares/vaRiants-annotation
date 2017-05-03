@@ -176,19 +176,19 @@ predictions<-anno$vcf %>%
 #______________________________________________
 #SIFT_pred
 predictions$SIFT_pred<-ifelse(as.character(predictions$SIFT_pred)=="T","tolerated",
-                       ifelse(as.character(predictions$SIFT_pred)=="D","deleterious",as.character(predictions$SIFT_pred)))
+                              ifelse(as.character(predictions$SIFT_pred)=="D","deleterious",as.character(predictions$SIFT_pred)))
 #Polyphen2_HVAR_pred
 predictions$Polyphen2_HVAR_pred<-ifelse(as.character(predictions$Polyphen2_HVAR_pred)=="D","probably damaging",
-                                 ifelse(as.character(predictions$Polyphen2_HVAR_pred)=="P","possibly damaging",
-                                        ifelse(as.character(predictions$Polyphen2_HVAR_pred)=="B","benign",as.character(predictions$Polyphen2_HVAR_pred))))
+                                        ifelse(as.character(predictions$Polyphen2_HVAR_pred)=="P","possibly damaging",
+                                               ifelse(as.character(predictions$Polyphen2_HVAR_pred)=="B","benign",as.character(predictions$Polyphen2_HVAR_pred))))
 #MutationAssessor
 predictions$MutationAssessor_pred<-ifelse(as.character(predictions$MutationAssessor_pred)=="L","low",
-                                   ifelse(as.character(predictions$MutationAssessor_pred)=="N","neutral",
-                                          ifelse(as.character(predictions$MutationAssessor_pred)=="M","medium",
-                                                 ifelse(as.character(predictions$MutationAssessor_pred)=="H","high",as.character(predictions$MutationAssessor_pred)))))
+                                          ifelse(as.character(predictions$MutationAssessor_pred)=="N","neutral",
+                                                 ifelse(as.character(predictions$MutationAssessor_pred)=="M","medium",
+                                                        ifelse(as.character(predictions$MutationAssessor_pred)=="H","high",as.character(predictions$MutationAssessor_pred)))))
 #PROVEAN
 predictions$PROVEAN_pred<-ifelse(as.character(predictions$PROVEAN_pred)=="N","neutral",
-                          ifelse(as.character(predictions$PROVEAN_pred)=="D","damaging",as.character(predictions$PROVEAN_pred)))
+                                 ifelse(as.character(predictions$PROVEAN_pred)=="D","damaging",as.character(predictions$PROVEAN_pred)))
 #SPIDEX
 predictions$SPIDEX<-abs(as.numeric(predictions$SPIDEX))
 
