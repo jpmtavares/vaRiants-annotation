@@ -114,7 +114,6 @@ hgvs_anno<-hgvs(trans_anno)
 #_________________________________________
 clinvar<-clinvarTab() %>%
   join(hgvs_anno,.) %>%
-  select(-c(Start,ALT))
   select(-Start)
 
 #_________________________________________
