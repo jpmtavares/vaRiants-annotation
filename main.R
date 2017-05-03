@@ -30,6 +30,7 @@ source("./functions/UMDpredictor.R")
 source("./functions/vcfFORMAT.R")
 source("./functions/mutationTaster.R")
 source("./functions/clinvar.R")
+source("./functions/GMfreq.R")
 #______________________________________________
 # set work directory, sample and genes
 #______________________________________________
@@ -42,12 +43,14 @@ genes<-unlist(strsplit(g,"\\|"))
 #______________________________________________
 # preparing input files
 #______________________________________________
-#UMD-predictor
-umd<-UMDpredictor(genes)
-
 load("./sources/bcbio_pipeline.Rdata") ## load previously saved .Rdata with reference transcripts, clinvar, and inHouse variant frequency
 ## save(refSeqGenes,GM_freq,file="./sources/bcbio_pipeline.Rdata")
 
+#UMD-predictor
+umd<-UMDpredictor(genes)
+
+#GM_freq
+GM_freq<-GMfreq(freq)
 #______________________________________________
 # import tables
 #______________________________________________
