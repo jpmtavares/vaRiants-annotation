@@ -46,7 +46,7 @@ genes<-unlist(strsplit(g,"\\|"))
 umd<-UMDpredictor(genes)
 
 load("./sources/bcbio_pipeline.Rdata") ## load previously saved .Rdata with reference transcripts, clinvar, and inHouse variant frequency
-## save(clinvarTab,refSeqGenes,GM_freq,file="./sources/bcbio_pipeline.Rdata")
+## save(refSeqGenes,GM_freq,file="./sources/bcbio_pipeline.Rdata")
 
 #______________________________________________
 # import tables
