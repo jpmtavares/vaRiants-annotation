@@ -81,6 +81,7 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
     }else{
       ## SNP
       var<-c(paste(Ref,">",Alt,sep=""),
+             paste(Alt,">",Ref,sep=""),
              reverseDNA(paste(Ref,">",Alt,sep="")),
              reverseDNA(paste(Ref,">",Alt,sep=""),complement = T))
     }
@@ -107,9 +108,37 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
 hgvs<-function(variants){
   mapply(mutalyzer,variants[,"Chr"],variants[,"Position"],variants[,"rs_ID"],
          variants[,"Ref"],variants[,"Alt"],variants[,"refSeq_mRNA"],
-         variants[,"refSeq_protein"])%>%
-    t()%>%
+         variants[,"refSeq_protein"])%>% #applying mutalyzer function to a data.frame
+    t()%>% #transpose data.frame
     cbind(variants,RefSeq_mRNA=.[,1],HGVS_c=.[,2],
-          RefSeq_protein=.[,3],HGVS_p=.[,4]) %>%
-    select(-refSeq_mRNA,-refSeq_protein,-`1`,-`2`,-`3`,-`4`)
+          RefSeq_protein=.[,3],HGVS_p=.[,4]) %>% #add new columns
+    select(-refSeq_mRNA,-refSeq_protein,-`1`,-`2`,-`3`,-`4`) #remove duplicated columns
+}
+
+##########################################################
+#                    variant type                        #
+##########################################################
+variant_type<-function(HGVS_c, HGVS_p){
+  ##__________________________________
+  ## if variant is exonic
+  ##__________________________________
+  ifelse(str_detect(HGVS_c,"[\\*\\+\\-]")==FALSE, # if variant is exonic
+         ifelse(grepl("=",HGVS_p)==TRUE, "silent", 
+                ifelse(grepl("Ter",HGVS_p)==TRUE, "nonsense",
+                       ifelse(grepl("fs",HGVS_p)==TRUE, "frame-shift", "missense"))),
+         ##__________________________________
+         ## if variant is intronic
+         ##__________________________________
+         ifelse(grepl("\\*",HGVS_c)==TRUE, "3-UTR",
+                ifelse(grepl("\\.\\-",HGVS_c)==TRUE, "5-UTR",
+                       ifelse(grepl("[0-9][\\-\\+][0-9][diATGC]|[0-9][\\-\\+][0-1][0-9][diATGC]",HGVS_c)==TRUE, "splicing", "intronic"))))
+}
+
+###########################################################
+# correct HGVS protein annotation for synonymous variants #
+###########################################################
+synonymous<-function(HGVS_p){
+  ifelse(grepl("=",HGVS_p)==TRUE,
+         gsub("=",str_extract(HGVS_p,"[^p.](?:(?!\\d).)*"),HGVS_p),
+         HGVS_p)
 }
