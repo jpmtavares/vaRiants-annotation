@@ -210,6 +210,7 @@ GMfreq<-GM_freq %>%
                                 as.numeric(Position)+1,
                                 as.numeric(Position)))) %>%
   join(predictions,.) %>%
+  select(-N_samples)
   unique()
 
 GMfreq[is.na(GMfreq$HGVS_c),"HGVS_c"]<-"."
