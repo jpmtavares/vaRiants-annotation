@@ -131,7 +131,7 @@ variant_type<-function(HGVS_c, HGVS_p){
          ##__________________________________
          ifelse(grepl("\\*",HGVS_c)==TRUE, "3-UTR",
                 ifelse(grepl("\\.\\-",HGVS_c)==TRUE, "5-UTR",
-                       ifelse(grepl("[0-9][\\-\\+][0-9][diATGC]|[0-9][\\-\\+][0-1][0-9][diATGC]",HGVS_c)==TRUE, "splicing", "intronic"))))
+                       ifelse(grepl("[0-9][-+][0-9][diATGC]|[0-9][-+][1][0-9][diATGC]",HGVS_c)==TRUE, "splicing", "intronic"))))
 }
 
 ###########################################################
