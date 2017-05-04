@@ -123,7 +123,7 @@ variant_type<-function(HGVS_c, HGVS_p){
   ## if variant is exonic
   ##__________________________________
   ifelse(str_detect(HGVS_c,"[\\*\\+\\-]")==FALSE, # if variant is exonic
-         ifelse(grepl("=",HGVS_p)==TRUE, "silent", 
+         ifelse(grepl("=",HGVS_p)==TRUE | str_extract(HGVS_p,"[^p.](?:(?!\\d).)*") == str_extract(HGVS_p,".{3}$"), "silent", 
                 ifelse(grepl("Ter",HGVS_p)==TRUE, "nonsense",
                        ifelse(grepl("fs",HGVS_p)==TRUE, "frame-shift", "missense"))),
          ##__________________________________
