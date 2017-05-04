@@ -206,11 +206,10 @@ predictions$SPIDEX<-abs(as.numeric(predictions$SPIDEX))
 GMfreq<-GM_freq %>%
   mutate(Position=ifelse(nchar(as.character(Ref))>1,
                          as.numeric(Position)+1,
-                         ifelse(nchar(as.character(ALT))>1,
+                         ifelse(nchar(as.character(Alt))>1,
                                 as.numeric(Position)+1,
                                 as.numeric(Position)))) %>%
   join(predictions,.) %>%
-  select(-c(ID,ALT)) %>%
   unique()
 
 GMfreq[is.na(GMfreq$HGVS_c),"HGVS_c"]<-"."
