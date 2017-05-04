@@ -140,5 +140,5 @@ variant_type<-function(HGVS_c, HGVS_p){
 synonymous<-function(HGVS_p){
   ifelse(grepl("=",HGVS_p)==TRUE,
          gsub("=",str_extract(HGVS_p,"[^p.](?:(?!\\d).)*"),HGVS_p),
-         HGVS_p)
+         as.character(HGVS_p))
 }
