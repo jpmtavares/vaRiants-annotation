@@ -20,7 +20,7 @@ UMDpredictor<-function(genes){
   umd<-mapply(cbind, "HGNC_symbol"=u$HGNC_symbol, "ENSTranscript"=u$ENSTranscript, umd,  SIMPLIFY=F)
   
   umdpredictor<-do.call("rbind", umd)
-  names(umdpredictor)[c(3:8)]<-c("TranscriptPosition","Position","HGVS_c","HGVS_p",
+  names(umdpredictor)[c(3:8)]<-c("TranscriptPosition","Position","HGVS_c","HGVSp",
                                  "score","UMD-predictor")
   return(umdpredictor)
 }
