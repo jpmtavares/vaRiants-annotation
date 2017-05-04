@@ -99,14 +99,15 @@ inter_transcripts<-left_join(anti_join(variants,transcripts),refSeqGenes)%>%
   mutate(Rank.Exons.Introns="intergenic") %>%
   unique()
 
-##add both and sort them by chromosome position
+##add both and sort by chromosome position
 trans_anno<-rbind(transcripts,inter_transcripts) %>%
   arrange(Chr, Position, HGNC_symbol)
 
 #______________________________________________
 # HGVS_mutalyzer
 #______________________________________________
-hgvs_anno<-hgvs(trans_anno)
+hgvs_anno<-hgvs(trans_anno) %>%
+  cbind(.,type=mapply(variant_type, .[,"HGVS_c"], .[,"HGVS_p"]))
 
 #_________________________________________
 # NCBI ClinVar
