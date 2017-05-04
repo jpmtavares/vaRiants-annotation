@@ -52,7 +52,7 @@ MT<-function(Chr,Position,Ref,Alt,Strand,ENSTranscript){
     if(MutationTaster!=("data problem")&&MutationTaster!=("wrong input format")&&MutationTaster!=("annotation problem")){
       homozygous<-data.frame(homozygous_1000G=as.vector(tables[[3]][2,2]),homozygous_ExAC=as.vector(tables[[3]][3,2]))    }
   }
-  return(data.frame(MutationTaster,homozygous))
+  return(cbind(MutationTaster,as.character(homozygous[,1]),as.character(homozygous[,2])))
 }
 
 ##########################################################
