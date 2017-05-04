@@ -147,6 +147,12 @@ UMD<-MT_anno %>%
   join(umd) %>%
   select(-c(TranscriptPosition,score))
 
+UMD$HGVS_p<-ifelse(!is.na(UMD$HGVSp) & as.character(UMD$HGVSp) != as.character(UMD$HGVS_p),
+                   as.character(UMD$HGVSp), as.character(UMD$HGVS_p))
+
+UMD<-select(UMD,-HGVSp) %>%
+  mutate(type=variant_type(UMD$HGVS_c, UMD$HGVS_p))
+  
 #_________________________________________
 # ANNOVAR predictions
 #_________________________________________
