@@ -60,8 +60,8 @@ GMfreq<-function(GM_freq){
     # write.table
     #___________________________________________________________
     output<-paste("GM_freq",format(Sys.time(), "%Y%m%d"),".txt",sep="")
-    write.table(freq, paste("./sources/",output,sep=""), row.names=F, col.names=T,
-                quote=F,sep="\t")
+    #write.table(freq, paste("./sources/",output,sep=""), row.names=F, col.names=T,
+    #            quote=F,sep="\t")
     save(refSeqGenes,freq,file="./sources/bcbio_pipeline.Rdata")
   }else{
     freq<-GM_freq
