@@ -73,14 +73,10 @@ variants<-data.frame(anno$vcf[,c("CHROM","POS","avsnp147","REF","ALT")],
               "coverage_alt","genotype","HGNC_symbol")) %>% #set colnames
   mutate(Chr=paste("chr",.$Chr,sep="")) #correct chr names
 
-##correct columns classes
-refSeqGenes$Start<-as.numeric(as.character(refSeqGenes$Start))
-refSeqGenes$End<-as.numeric(as.character(refSeqGenes$End))
-variants$Position<-as.numeric(as.character(variants$Position))
 ##correct coordinates for indels
-variants$Position<-ifelse(nchar(variants$Ref)>1,
+variants$Position<-ifelse(nchar(as.character(variants$Ref))>1,
                           as.numeric(as.character(variants$Position))+1,
-                          ifelse(nchar(variants$Alt)>1,
+                          ifelse(nchar(as.character(variants$Alt))>1,
                                  as.numeric(as.character(variants$Position))+1,
                                  as.numeric(as.character(variants$Position))))
 
