@@ -21,6 +21,8 @@ library(readr)
 library(XML)
 library(RCurl)
 library(lubridate)
+library(BSgenome.Hsapiens.UCSC.hg19)
+library(data.table)
 #______________________________________________
 # R source files
 #______________________________________________
@@ -124,11 +126,12 @@ HSF<-data.frame(clinvar, HSF="error")
 #_________________________________________
 # MutationTaster
 #_________________________________________
-MT_anno<-apply(HSF,1,function(x){
-  MT(x["Chr"],x["Position"],x["Ref"],x["Alt"],
-     x["Strand"],x["ENSTranscript"])})%>%
-  do.call(rbind.data.frame,.) %>%
-  cbind(HSF,.)
+MT_anno<-HSF %>%
+  cbind(., t(mapply(MT, .[,"Chr"], .[,"Position"], .[,"Ref"], .[,"Alt"],
+                                 .[,"Strand"], .[,"ENSTranscript"]))) %>%
+  setnames("1","mutationTaster") %>%
+  setnames("2","homozygous_1000G") %>%
+  setnames("3","homozygous_ExAC")
 
 #_________________________________________
 # UMD-predictor
