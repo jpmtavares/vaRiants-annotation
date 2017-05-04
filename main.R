@@ -133,18 +133,16 @@ MT_anno<-HSF %>%
   setnames("2","homozygous_1000G") %>%
   setnames("3","homozygous_ExAC")
 
-#_________________________________________
-# UMD-predictor
-#_________________________________________
 #correct HGVS
-MT_anno$HGVS_p<-apply(as.matrix(MT_anno$HGVS_p),1,function(x){
-  ifelse(grepl("=",x)==TRUE,
-         gsub("=",str_extract(x,"[^p.](?:(?!\\d).)*"),x),
-         x)})
+MT_anno$HGVS_p<-mapply(synonymous,MT_anno$HGVS_p)
+
 #correct homozygous counting
 MT_anno$homozygous_ExAC[grep("\\.",MT_anno$homozygous_ExAC)]<-"-"
 MT_anno$homozygous_1000G[grep("\\.",MT_anno$homozygous_1000G)]<-"-"
 
+#_________________________________________
+# UMD-predictor
+#_________________________________________
 UMD<-MT_anno %>%
   join(umd) %>%
   select(-c(TranscriptPosition,score))
