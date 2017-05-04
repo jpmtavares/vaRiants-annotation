@@ -14,10 +14,11 @@ vcfFORMAT<-function(format){
   
   #genotype field - human-readable
   cov_original<-c("0/0","0/1","1/0","1/1","1/.","./1",
-                  "0|0","0|1","1|0","1|1")
+                  "0|0","0|1","1|0","1|1","1|.",".|1")
   cov_replacement<-c("homozygous reference","heterozygous","heterozygous","homozygous",
                      "heterozygous","heterozygous",
-                     "homozygous reference","heterozygous","heterozygous","homozygous")
+                     "homozygous reference","heterozygous","heterozygous","homozygous",
+                     "heterozygous","heterozygous")
   
   cov$genotype<-mgsub(cov_original, cov_replacement, cov[,1])
   cov$coverage<-cov[,3]
