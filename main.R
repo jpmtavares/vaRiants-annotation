@@ -33,6 +33,7 @@ source("./functions/vcfFORMAT.R")
 source("./functions/mutationTaster.R")
 source("./functions/clinvar.R")
 source("./functions/GMfreq.R")
+source("./functions/genomiser.R")
 #______________________________________________
 # set work directory, sample and genes
 #______________________________________________
@@ -149,6 +150,14 @@ UMD$HGVS_p<-ifelse(!is.na(UMD$HGVSp) & as.character(UMD$HGVSp) != as.character(U
 
 UMD<-select(UMD,-HGVSp) %>%
   mutate(type=variant_type(UMD$HGVS_c, UMD$HGVS_p))
+
+#_________________________________________
+# Genomiser
+#_________________________________________
+if(length(list.files("../","*variants.tsv")) >0){
+  Genomiser<-data.frame(UMD,Genomiser=genomiser(UMD))
+  UMD<-Genomiser
+}
   
 #_________________________________________
 # ANNOVAR predictions
