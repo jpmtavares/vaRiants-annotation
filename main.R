@@ -127,11 +127,8 @@ HSF<-data.frame(clinvar, HSF="error")
 # MutationTaster
 #_________________________________________
 MT_anno<-HSF %>%
-  cbind(., t(mapply(MT, .[,"Chr"], .[,"Position"], .[,"Ref"], .[,"Alt"],
-                                 .[,"Strand"], .[,"ENSTranscript"]))) %>%
-  setnames("1","mutationTaster") %>%
-  setnames("2","homozygous_1000G") %>%
-  setnames("3","homozygous_ExAC")
+  apply(1,MT) %>% do.call(rbind.data.frame,.) %>%
+  cbind(HSF, .)
 
 #correct HGVS
 MT_anno$HGVS_p<-mapply(synonymous,MT_anno$HGVS_p)
