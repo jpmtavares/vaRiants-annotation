@@ -22,24 +22,22 @@ MT<-function(variants){
     }
     
     # Read and parse HTML file
-    session<-html_session("http://www.mutationtaster.org/")
-    form<-set_values(html_form(session)[[1]],
-                     transcript_stable_id_text=variants["ENSTranscript"],
-                     sequence_type="gDNA",
-                     sequence_snippet=snippet)
-    doc.text <- submit_form(session, form) %>%
-      read_html() %>% 
+    #session<-html_session("http://www.mutationtaster.org/")
+    #form<-set_values(html_form(session)[[1]],
+    #                 transcript_stable_id_text=variants["ENSTranscript"],
+    #                 sequence_type="gDNA",
+    #                 sequence_snippet=snippet)
+    doc.text<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_snippet=",snippet,"&sequence_type=gDNA",sep="")) %>%
       html_nodes("h3") %>% 
       html_text()
     if(length(doc.text)==0){
-      doc.text <- submit_form(session, form) %>%
-        read_html() %>% 
+      doc.text<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_snippet=",snippet,"&sequence_type=gDNA",sep="")) %>%
         html_nodes("h2") %>% 
         html_text()
     }
     #read HTML tables
-    tables <- submit_form(session, form) %>%
-      read_html() %>% html_table(fill=T)
+    tables<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_snippet=",snippet,"&sequence_type=gDNA",sep="")) %>%
+      html_table(fill=T)
     #get precition result
     toMatch <- c("polymorphism","disease causing","wrong input format","data problem","annotation problem")
     MutationTaster<-unique(grep(paste(toMatch,collapse="|"), 
@@ -97,24 +95,22 @@ MT<-function(variants){
       }
       
       # Read and parse HTML file
-      session<-html_session("http://www.mutationtaster.org/")
-      form<-set_values(html_form(session)[[1]],
-                       transcript_stable_id_text=variants["ENSTranscript"],
-                       sequence_type="gDNA",
-                       sequence_snippet=snippet)
-      doc.text <- submit_form(session, form) %>%
-        read_html() %>% 
+      #session<-html_session("http://www.mutationtaster.org/")
+      #form<-set_values(html_form(session)[[1]],
+      #                 transcript_stable_id_text=variants["ENSTranscript"],
+      #                 sequence_type="gDNA",
+      #                 sequence_snippet=snippet)
+      doc.text<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_snippet=",snippet,"&sequence_type=gDNA",sep="")) %>%
         html_nodes("h3") %>% 
         html_text()
       if(length(doc.text)==0){
-        doc.text <- submit_form(session, form) %>%
-          read_html() %>% 
+        doc.text<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_snippet=",snippet,"&sequence_type=gDNA",sep="")) %>%
           html_nodes("h2") %>% 
           html_text()
       }
       #read HTML tables
-      tables <- submit_form(session, form) %>%
-        read_html() %>% html_table(fill=T)
+      tables<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_snippet=",snippet,"&sequence_type=gDNA",sep="")) %>%
+        html_table(fill=T)
       #get precition result
       toMatch <- c("polymorphism","disease causing","wrong input format","data problem","annotation problem")
       MutationTaster<-unique(grep(paste(toMatch,collapse="|"), 
@@ -139,7 +135,7 @@ MT<-function(variants){
 #    html_nodes("td a") %>%
 #    html_attr("href") %>% 
 #    grep(ENSTranscript,.,value=T)
-  
+
 #  MutationTaster<-read_html(url[1]) %>%
 #    html_nodes("h3") %>%
 #    html_text()
@@ -148,10 +144,10 @@ MT<-function(variants){
 #      html_nodes("h2") %>%
 #      html_text()
 #  }
-  
+
 #  tables<-read_html(url[1]) %>%
 #    html_table(fill=T)
-  
+
 #  homozygous<-data.frame(homozygous_1000G=NA,homozygous_ExAC=NA)
 #  if((!is.null(MutationTaster))&&(!is.na(MutationTaster))){
 #    if(MutationTaster!=("data problem")&&MutationTaster!=("wrong input format")&&MutationTaster!=("annotation problem")){
