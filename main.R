@@ -53,7 +53,7 @@ load("./sources/bcbio_pipeline.Rdata") ## load previously saved .Rdata with refe
 umd<-UMDpredictor(genes)
 
 #GM_freq
-GM_freq<-GMfreq(freq)
+GM_freq<-GMfrequency(freq)
 #______________________________________________
 # import tables
 #______________________________________________
