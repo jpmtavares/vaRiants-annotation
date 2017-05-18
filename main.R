@@ -168,7 +168,7 @@ predictions<-anno$vcf %>%
          MutationAssessor_score,MutationAssessor_pred,CADD13_PHRED,DANN_score,
          FATHMM_coding,FATHMM_noncoding,GWAVA_region_score,`GERP.._RS`,
          phyloP20way_mammalian,phastCons20way_mammalian,SiPhy_29way_logOdds,
-         dpsi_max_tissue,PopFreqMax,X1000G_EUR,X1000G_ALL,ExAC_EAS,ExAC_ALL,
+         dpsi_max_tissue,PopFreqMax,X1000G_EUR,X1000G_ALL,gnomAD_genome_NFE,gnomAD_genome_ALL,
          ESP6500siv2_EA,ESP6500siv2_ALL) %>%
   set_names(c("Chr","Position","rs_ID","Ref","Alt","SIFT_score","SIFT_pred",
               "PROVEAN_score","PROVEAN_pred","Polyphen2_HVAR_score",
@@ -176,7 +176,7 @@ predictions<-anno$vcf %>%
               "CADD13_PHRED","DANN_score","FATHMM_coding","FATHMM_noncoding",
               "GWAVA_region_score","GERP++RS","phyloP20_mammalian",
               "phastCons20_mammalian","SiPhy","SPIDEX","PopFreqMax","1000G_EUR",
-              "1000G_ALL","ExAC_EAS","ExAC_ALL","ESP_EUR","ESP_ALL")) %>%
+              "1000G_ALL","gnomAD_EAS","gnomAD_ALL","ESP_EUR","ESP_ALL")) %>%
   mutate(Chr=paste("chr",.$Chr,sep=""),
          Position=ifelse(nchar(Ref)>1,
                          as.numeric(as.character(Position))+1,
