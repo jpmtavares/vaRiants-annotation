@@ -58,7 +58,7 @@ GM_freq<-GMfrequency(freq)
 # import tables
 #______________________________________________
 #variant calls (by at least two callers -> ensemble) & ANNOVAR annotation
-anno<-read.vcf(list.files(pattern="*multianno.vcf",recursive=TRUE),
+anno<-read.vcf(paste("../",list.files("../",pattern="*multianno.vcf",recursive=TRUE),sep=""),
                split.info = T)
 names(anno$vcf)[ncol(anno$vcf)]<-sample ##change last column name to SAMPLE
 
