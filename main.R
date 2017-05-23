@@ -163,7 +163,8 @@ UMD$HGVS_p<-ifelse(!is.na(UMD$HGVSp) & as.character(UMD$HGVSp) != as.character(U
                    as.character(UMD$HGVSp), as.character(UMD$HGVS_p))
 
 UMD<-select(UMD,-HGVSp) %>%
-  mutate(type=variant_type(UMD$HGVS_c, UMD$HGVS_p))
+  mutate(type=variant_type(UMD$HGVS_c, UMD$HGVS_p)) %>%
+  unique()
 
 #_________________________________________
 # Genomiser
@@ -230,7 +231,7 @@ GMfreq<-GM_freq %>%
                                 as.numeric(Position)+1,
                                 as.numeric(Position)))) %>%
   join(predictions,.) %>%
-  select(-N_samples)
+  select(-N_samples) %>%
   unique()
 
 GMfreq[is.na(GMfreq$HGVS_c),"HGVS_c"]<-"."
