@@ -69,15 +69,26 @@ names(anno$vcf)[ncol(anno$vcf)]<-sample ##change last column name to SAMPLE
 cov<-vcfFORMAT(anno$vcf[[sample]])
 
 ##get variants and combine coverage and genotype information
-variants<-data.frame(anno$vcf[,c("CHROM","POS","avsnp147","REF","ALT")], 
-                     cov, anno$vcf[,c("Gene.refGene","CSQ")]) %>%
-  filter(grepl(g,.[,11])) %>% #variants in genes of interest
+variants_tmp<-data.frame(anno$vcf[,c("CHROM","POS","avsnp147","REF","ALT")], 
+                         cov, anno$vcf[,c("Gene.refGene","CSQ","ANN")]) %>%
+  filter(grepl(g,.[,11]) | grepl(g,.[,12])) %>% #variants in genes of interest
   mutate(Gene.refGene=unlist(lapply(strsplit(.[,11],"|",fixed=T), "[[", 4))) %>%
   filter(.[,10] %in% genes) %>%
-  select(-CSQ) %>%
+  select(-c(CSQ,ANN)) %>%
   set_names(c("Chr","Position","rs_ID","Ref","Alt","coverage","coverage_ref",
               "coverage_alt","genotype","HGNC_symbol")) %>% #set colnames
   mutate(Chr=paste("chr",.$Chr,sep="")) #correct chr names
+
+variants<-data.frame(anno$vcf[,c("CHROM","POS","avsnp147","REF","ALT")], 
+                     cov, anno$vcf[,c("Gene.refGene")]) %>%
+  filter(.[,10] %in% genes) %>%
+  set_names(c("Chr","Position","rs_ID","Ref","Alt","coverage","coverage_ref",
+              "coverage_alt","genotype","HGNC_symbol")) %>% #set colnames
+  mutate(Chr=paste("chr",.$Chr,sep="")) %>% #correct chr names
+  rbind(variants_tmp,.) %>%
+  unique()
+
+rm(variants_tmp)
 
 ##correct coordinates for indels
 variants$Position<-ifelse(nchar(as.character(variants$Ref))>1,
