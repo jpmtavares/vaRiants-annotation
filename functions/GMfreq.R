@@ -11,8 +11,8 @@ GMfrequency<-function(GM_freq){
   temp<-system("ls -dR -1 /genomedarchive/Archive/Analysis/*/*/*/final/*/* | grep 'ensemble.vcf.gz$'",
                intern = T)
   
-  if(length(temp) > GM_freq$N_samples[1]){ #if the number of samples in "Analysis" 
-    #is higher than the number of samples used in the last GMfreq file
+  if(length(temp) > GM_freq$N_samples[1]+8){ #if the number of samples in "Analysis" 
+    #is 8x higher than the number of samples used in the last GMfreq file
     
     #read ensemble.vcf.gz files
     myfiles<-lapply(temp, function(x){
