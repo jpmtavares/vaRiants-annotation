@@ -70,7 +70,7 @@ cov<-vcfFORMAT(anno$vcf[[sample]])
 
 ##get variants and combine coverage and genotype information
 variants_tmp<-data.frame(anno$vcf[,c("CHROM","POS","avsnp147","REF","ALT")], 
-                         cov, anno$vcf[,c("Gene.refGene","CSQ","ANN")]) %>%
+                         cov, anno$vcf[,c("Gene.refGene","ANN","CSQ")]) %>%
   filter(grepl(g,.[,11]) | grepl(g,.[,12])) %>% #variants in genes of interest
   mutate(Gene.refGene=unlist(lapply(strsplit(.[,11],"|",fixed=T), "[[", 4))) %>%
   filter(.[,10] %in% genes) %>%
