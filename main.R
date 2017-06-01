@@ -191,7 +191,7 @@ predictions<-anno$vcf %>%
               "CADD13_PHRED","DANN_score","FATHMM_coding","FATHMM_noncoding",
               "GWAVA_region_score","GERP++RS","phyloP20_mammalian",
               "phastCons20_mammalian","SiPhy","SPIDEX","PopFreqMax","1000G_EUR",
-              "1000G_ALL","gnomAD_EAS","gnomAD_ALL","ESP_EUR","ESP_ALL")) %>%
+              "1000G_ALL","gnomAD_EUR","gnomAD_ALL","ESP_EUR","ESP_ALL")) %>%
   mutate(Chr=paste("chr",.$Chr,sep=""),
          Position=ifelse(nchar(Ref)>1,
                          as.numeric(as.character(Position))+1,
