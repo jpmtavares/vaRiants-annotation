@@ -4,7 +4,16 @@
 #                                                        #
 ##########################################################
 genomiser<-function(variants){
-  file<-read.delim(paste("../",list.files("../","*variants.tsv"),sep=""), header =T)
+  #read genomiser files
+  myfiles<-lapply(paste("../",list.files("../","*variants.tsv",recursive=TRUE),sep=""), function(x){
+    file<-read.delim(x)
+    return(file) #remove header from vcf file
+  })
+  
+  #list2data.frame
+  file<-do.call(rbind.data.frame, myfiles)
+  
+  #file<-read.delim(paste("../",list.files("../","*variants.tsv"),sep=""), header =T)
   ##correct coordinates for indels
   file$POS<-ifelse(nchar(as.character(file$REF))>1,
                    as.numeric(as.character(file$POS))+1,
@@ -19,8 +28,9 @@ genomiser<-function(variants){
     setnames("ALT","Alt")%>%
     mutate(Chr=paste("chr",.$Chr,sep="")) %>% #correct chr names
     left_join(variants,.) %>%
-    setnames("EXOMISER_GENE_COMBINED_SCORE","Genomiser")%>%
-    select(Genomiser)
+    setnames("EXOMISER_VARIANT_SCORE","Genomiser")%>%
+    .[,c(names(variants),"Genomiser")] %>%
+    unique()
   
   return(geno)
 }
