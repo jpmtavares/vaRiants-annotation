@@ -34,6 +34,7 @@ source("./functions/mutationTaster.R")
 source("./functions/clinvar.R")
 source("./functions/GMfreq.R")
 source("./functions/genomiser.R")
+source("./functions/hgmdLOVD.R")
 #______________________________________________
 # set work directory, sample and genes
 #______________________________________________
@@ -47,7 +48,7 @@ genes<-unlist(strsplit(g,"\\|"))
 # preparing input files
 #______________________________________________
 load("./sources/bcbio_pipeline.Rdata") ## load previously saved .Rdata with reference transcripts, clinvar, and inHouse variant frequency
-## save(refSeqGenes,GM_freq,file="./sources/bcbio_pipeline.Rdata")
+## save(refSeqGenes,freq,file="./sources/bcbio_pipeline.Rdata")
 
 #UMD-predictor
 umd<-UMDpredictor(genes)
@@ -102,8 +103,8 @@ variants$Position<-ifelse(nchar(as.character(variants$Ref))>1,
 #______________________________________________
 ##variants within transcripts
 transcripts<-left_join(variants,refSeqGenes) %>%
-  filter(as.numeric(Start) <= as.numeric(Position) &
-           as.numeric(Position) <= as.numeric(End)) %>%
+  filter(as.numeric(as.character(Start)) <= as.numeric(as.character(Position)) &
+           as.numeric(as.character(Position)) <= as.numeric(as.character(End))) %>%
   select(Chr, Position, rs_ID, Ref, Alt, coverage, coverage_ref, coverage_alt, genotype,
          HGNC_symbol, Rank.Exons.Introns, Strand, ENSGene, ENSTranscript, refSeq_mRNA,
          refSeq_protein)
@@ -132,6 +133,12 @@ hgvs_anno<-hgvs(trans_anno) %>%
 clinvar<-clinvarTab() %>%
   join(hgvs_anno,.) %>%
   select(-Start)
+
+#_________________________________________
+# HGMD & LOVD (presence/absence)
+#_________________________________________
+#hgmd_lovd<-hgmdLOVD(clinvar)
+
 
 #_________________________________________
 # HSF
@@ -170,7 +177,7 @@ UMD<-select(UMD,-HGVSp) %>%
 # Genomiser
 #_________________________________________
 if(length(list.files("../","*variants.tsv")) >0){
-  Genomiser<-data.frame(UMD,Genomiser=genomiser(UMD))
+  Genomiser<-genomiser(UMD)
   UMD<-Genomiser
 }
   
