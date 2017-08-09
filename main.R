@@ -35,6 +35,7 @@ source("./functions/clinvar.R")
 source("./functions/GMfreq.R")
 source("./functions/genomiser.R")
 source("./functions/hgmdLOVD.R")
+source("./functions/gwas.R")
 #______________________________________________
 # set work directory, sample and genes
 #______________________________________________
@@ -140,9 +141,14 @@ clinvar<-clinvarTab() %>%
 #hgmd_lovd<-hgmdLOVD(clinvar)
 
 #_________________________________________
+# GWAS catalog
+#_________________________________________
+gwas<-GWAS(clinvar)
+
+#_________________________________________
 # HSF
 #_________________________________________
-HSF<-data.frame(clinvar, HSF="error")
+HSF<-data.frame(gwas, HSF="error")
 
 #_________________________________________
 # MutationTaster
