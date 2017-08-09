@@ -139,7 +139,6 @@ clinvar<-clinvarTab() %>%
 #_________________________________________
 #hgmd_lovd<-hgmdLOVD(clinvar)
 
-
 #_________________________________________
 # HSF
 #_________________________________________
@@ -272,7 +271,7 @@ covless15<-cinquenta %>%
 # directory creation
 dir.create("./my_analysis", recursive=F, mode = "0777")
 library("WriteXLS")
-write.table(GMfreq,paste("./my_analysis/",sample,"_all_variants.txt",sep=""),col.names=T,row.names=F,sep="\t",quote=F)
+#write.table(GMfreq,paste("./my_analysis/",sample,"_all_variants.txt",sep=""),col.names=T,row.names=F,sep="\t",quote=F)
 
 WriteXLS(c("cov15","covless15","off"), ExcelFileName = paste("./my_analysis/",sample,"_genes_variants.xlsx",sep=""), SheetNames = c("High confidence","Low confidence","Off target"), perl = "perl",
          row.names = FALSE, col.names = TRUE,
