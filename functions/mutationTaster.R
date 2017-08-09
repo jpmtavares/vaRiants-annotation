@@ -56,7 +56,7 @@ MT<-function(variants){
     ##___________________________________
     ## EXONIC SNP
     ##___________________________________
-    if(str_detect(variants["HGVS_c"],"[\\*+-]")==FALSE){
+    if((str_detect(variants["HGVS_c"],"[\\*+-]")==FALSE)&&(!is.na(variants["HGVS_c"]))){
       doc.text<-read_html(paste("http://www.mutationtaster.org/cgi-bin/MutationTaster/MutationTaster69.cgi?position_be=",str_extract(variants["HGVS_c"],"\\d.[\\d]"),"&new_base=",str_extract(variants["HGVS_c"],"(?<=\\>).*"),"&transcript_stable_id_text=",variants["ENSTranscript"],"&sequence_type=CDS",sep=""))%>%
         html_nodes("h3") %>% 
         html_text()
