@@ -6,11 +6,11 @@ cd ./sources
 gunzip $1.vcf.gz 
 
 #remove '
-sed -i -e s/\'//g $1.vcf
+#sed -i -e s/\'//g $1.vcf
 #remove #VAR (because we want to mantain # in headers)
 sed -i "s/#VAR/VAR/g" $1.vcf
 #remove \x2c which encode for _
-sed -i "s/\\\x2c//g" $1.vcf
+#sed -i "s/\\\x2c//g" $1.vcf
 
 #sort vcf
 vcf-sort $1.vcf > $1_sorted.vcf
