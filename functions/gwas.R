@@ -8,14 +8,14 @@ GWAS<-function(variants){
                        header = T)
   gwas<-Gstudies %>%
     setnames("CHR_ID","Chr") %>% #set column names
-    setnames("CHR_POS","Position") %>%
+    #setnames("CHR_POS","Position") %>%
     setnames("SNPS","rs_ID") %>%
     mutate(Chr=paste("chr",.$Chr,sep="")) %>% #correct chr names
-    mutate(Position=as.numeric(as.character(Position))) %>% #correct Position class
+    #mutate(CHR_POS=as.numeric(as.character(CHR_POS))) %>% #correct Position class
+    mutate(rs_ID=as.character(rs_ID)) %>% #correct Position class
     left_join(variants,.) %>%
     setnames("LINK","GWAS")%>%
-    .[,c(names(variants),"GWAS")] %>%
-    unique()
+    .[,c(names(variants),"GWAS")]
   
   return(gwas)
 }
