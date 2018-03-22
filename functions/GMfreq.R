@@ -3,18 +3,15 @@
 #                    GenoMed Frequency                   #
 #                                                        #
 ##########################################################
-GMfrequency<-function(GM_freq){
 GMfrequency<-function(GM_freq,path){
   #___________________________________________________________
   # import ensemble.vcf.gz files
   #___________________________________________________________
   #get paths of ensemble.vcf.gz files
-  temp<-system("ls -dR -1 /genomedarchive/Archive/Analysis/*/*/*/final/*/* | grep 'ensemble.vcf.gz$'",
   temp<-system(paste("find ",path,"/Archive/Analysis/*/*/*/final -type f | grep 'ensemble.vcf.gz$'",sep=""),
                intern = T)
   temp<-temp[-grep("HCMcardio",temp)]
   
-  if(length(temp) > GM_freq$N_samples[1]+8){ #if the number of samples in "Analysis" 
   if(length(temp) > GM_freq$N_samples[1]+30){ #if the number of samples in "Analysis" 
     #is 8x higher than the number of samples used in the last GMfreq file
     
