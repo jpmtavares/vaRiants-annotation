@@ -38,20 +38,21 @@ clinvarTab<-function(x){
     #_________________________________________
     
     ###list2df
-    clinvarTab<-clinvarVcf$vcf[c("CHROM","POS","ID","REF","ALT","CLNSIG", "CLNDBN","CLNREVSTAT")]
+    clinvarTab<-clinvarVcf$vcf[c("CHROM","POS","RS","REF","ALT","CLNSIG", "CLNDN","CLNREVSTAT")]
     
     ###human-readable
     library(qdap)
     #CLNSIG
-    clnsig_original<-c(0,1,2,3,4,5,6,7,255)
-    clnsig_replacement<-c("Uncertain significance","not provided","Benign",
-                          "Likely-benign","Likely-pathogenic","Pathogenic","drug-response",
-                          "histocompatibility","other")
-    clinvarTab$CLNSIG<-mgsub(clnsig_original, clnsig_replacement, clinvarTab$CLNSIG)
-    
+    #clnsig_original<-c(0,1,2,3,4,5,6,7,255)
+    #clnsig_replacement<-c("Uncertain significance","not provided","Benign",
+    #                      "Likely-benign","Likely-pathogenic","Pathogenic","drug-response",
+    #                      "histocompatibility","other")
+    #clinvarTab$CLNSIG<-mgsub(clnsig_original, clnsig_replacement, clinvarTab$CLNSIG)
+    clinvarTab$CLNSIG<-gsub("_", " ",clinvarTab$CLNSIG)
+
     #CLNREVSTAT
-    clnrevstat_original<-c("no_assertion","no_criteria","single","mult","conf","exp","guideline")
-    clnrevstat_replacement<-c("no stars","no stars",
+    clnrevstat_original<-c("no_assertion_criteria_provided","no_assertion_provided","no_interpretation_for_the_single_variant","criteria_provided,_single_submitter","criteria_provided,_multiple_submitters,_no_conflicts","criteria_provided,_conflicting_interpretations","reviewed_by_expert_panel","practice_guideline")
+    clnrevstat_replacement<-c("no stars","no stars","no stars",
                               "*","**",
                               "*","***",
                               "****")
@@ -64,9 +65,10 @@ clinvarTab<-function(x){
     ###unifying file format 
     clinvar<-clinvarTab %>%
       mutate(CHROM=paste("chr",.$CHROM,sep=""),
-             CLNDBN=gsub("#","_",as.character(.$CLNDBN)),
-             CLNDBN=gsub("'","_",as.character(.$CLNDBN)),
-             CLNDBN=gsub("\\\\x2c",",",as.character(.$CLNDBN))) %>%
+             RS=paste("rs",.$RS,sep="")) %>%#,
+             #CLNDN=gsub("#","_",as.character(.$CLNDN)),
+             #CLNDN=gsub("'","_",as.character(.$CLNDN)),
+             #CLNDN=gsub("\\\\x2c",",",as.character(.$CLNDN))) %>%
       set_names(c("Chr","Start","rs_ID","Ref","Alt","clinvar_sig","clinvar_disease_name","clinvar_stars")) %>%
       mutate(Alt = strsplit(as.character(Alt), ",")) %>%
       unnest(Alt) %>%
