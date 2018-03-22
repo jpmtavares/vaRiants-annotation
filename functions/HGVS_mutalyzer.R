@@ -23,7 +23,7 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
     #                    new variant                        #
     ##########################################################
     ## INSERTION
-    if(nchar(Alt)>1){
+    if(nchar(as.character(Alt))>1){
       #Read and parse html file
       doc.text <- try(read_html(paste("https://mutalyzer.nl/position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.character(Position)),"_",as.numeric(as.character(Position)),"ins",sub('.', '', Alt),sep="")) %>%
                         html_nodes("pre") %>% 
@@ -36,9 +36,9 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
       hgvs_protein<-do.call('rbind',strsplit(doc.text[grepl(refSeq_protein,doc.text)],':',fixed=TRUE))
     }else{
       ## DELETION
-      if(nchar(Ref)>1){
+      if(nchar(as.character(Ref))>1){
         #Read and parse html file
-        doc.text <- try(read_html(paste("https://mutalyzer.nl/position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.numeric(as.character(Position))-(nchar(Ref)-2)),"_",as.numeric(as.character(Position)),"del",sub('.', '', Ref),sep="")) %>%
+        doc.text <- try(read_html(paste("https://mutalyzer.nl/position-converter?assembly_name_or_alias=GRCh37&description=",Chr,"%3Ag.",as.numeric(as.numeric(as.character(Position))-(nchar(as.character(Ref))-2)),"_",as.numeric(as.character(Position)),"del",sub('.', '', Ref),sep="")) %>%
                           html_nodes("pre") %>% 
                           html_text()
         )
@@ -66,14 +66,14 @@ mutalyzer<-function(Chr,Position,rs_ID,Ref,Alt,refSeq_mRNA,refSeq_protein){
   #                   get correct output                   #
   ##########################################################
   ## INSERTION
-  if(nchar(Alt)>1){
+  if(nchar(as.character(Alt))>1){
     var<-c(paste("ins",sub('.', '', Alt),sep=""),
            paste("ins",paste(rev(strsplit(sub('.', '', Alt),"")[[1]]),collapse = ""),sep=""),
            paste("ins",reverseDNA(sub('.', '', Alt)),sep=""), 
            paste("ins",reverseDNA(sub('.', '', Alt),complement = T),sep=""))
   }else{
     ## DELETION
-    if(nchar(Ref)>1){
+    if(nchar(as.character(Ref))>1){
       var<-c(paste("del",sub('.', '', Ref),sep=""),
              paste("del",paste(rev(strsplit(sub('.', '', Ref),"")[[1]]),collapse = ""),sep=""),
              paste("del", reverseDNA(sub('.', '', Ref)),sep=""), 
