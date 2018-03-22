@@ -4,11 +4,13 @@
 #                                                        #
 ##########################################################
 GMfrequency<-function(GM_freq){
+GMfrequency<-function(GM_freq,path){
   #___________________________________________________________
   # import ensemble.vcf.gz files
   #___________________________________________________________
   #get paths of ensemble.vcf.gz files
   temp<-system("ls -dR -1 /genomedarchive/Archive/Analysis/*/*/*/final/*/* | grep 'ensemble.vcf.gz$'",
+  temp<-system(paste("find ",path,"/Archive/Analysis/*/*/*/final -type f | grep 'ensemble.vcf.gz$'",sep=""),
                intern = T)
   temp<-temp[-grep("HCMcardio",temp)]
   
