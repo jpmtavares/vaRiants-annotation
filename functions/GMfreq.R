@@ -15,6 +15,7 @@ GMfrequency<-function(GM_freq,path){
   temp<-temp[-grep("HCMcardio",temp)]
   
   if(length(temp) > GM_freq$N_samples[1]+8){ #if the number of samples in "Analysis" 
+  if(length(temp) > GM_freq$N_samples[1]+30){ #if the number of samples in "Analysis" 
     #is 8x higher than the number of samples used in the last GMfreq file
     
     #read ensemble.vcf.gz files
