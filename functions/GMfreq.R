@@ -16,10 +16,16 @@ GMfrequency<-function(GM_freq,path){
     #is 8x higher than the number of samples used in the last GMfreq file
     
     #read ensemble.vcf.gz files
-    myfiles<-lapply(temp, function(x){
-      file<-read.vcf(x)
-      return(file$vcf) #remove header from vcf file
-    }) 
+    ##__________________________________
+    ## parallelize
+    ##__________________________________
+    registerDoParallel(cores=8)
+    myfiles<-foreach(x=temp) %dopar% read.vcf(x)
+    
+    #myfiles<-lapply(temp, function(x){
+    #  file<-read.vcf(x)
+    #  return(file$vcf) #remove header from vcf file
+    #}) 
     
     #___________________________________________________________
     # processing
