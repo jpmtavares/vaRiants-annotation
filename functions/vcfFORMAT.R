@@ -56,7 +56,7 @@ vcfFORMAT<-function(format, somatic = FALSE){
       format$CSQ=NA
     }
   }
-  variants<-data.frame(format[,c("CHROM","POS","avsnp147","REF","ALT")],
+  variants<-data.frame(format[,c("CHROM","POS","avsnp150","REF","ALT")],
                        cov, format[,c("Gene.refGene","ANN","CSQ")])
   
   return(variants)
