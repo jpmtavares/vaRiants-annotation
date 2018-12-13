@@ -7,15 +7,17 @@
 writeExcel<-function(variants, notFound){
   
   novenove<-variants %>%
-    filter(str_detect(HGVS_c,"[\\*\\+\\-][0-9]{1,2}[diATGC]")==TRUE | #all variants up to 99bp from SS
-             str_detect(HGVS_c,"[\\*\\+\\-]")==FALSE) #add exonic
+    filter((str_detect(HGVS_c,"[\\*\\+\\-][0-9]{1,2}[diATGC]")==TRUE | #all variants up to 99bp from SS
+              str_detect(HGVS_c,"[\\*\\+\\-]")==FALSE) | #add exonic
+             is.na(variants$HGVS_c)) #add variants with no HGVS_c
   
   non_novenove<-variants %>%
     filter(str_detect(HGVS_c,"[\\*\\+\\-][0-9]{1,2}[diATGC]")==FALSE) %>% #all variants beyond 99bp from SS
     filter(str_detect(HGVS_c,"[\\*\\+\\-]")==TRUE) #remove exonic
   
   cinquenta<-novenove %>%
-    filter(str_detect(HGVS_c,"[\\*\\+\\-][5-9][0-9][diATGC]")==FALSE)
+    filter(str_detect(HGVS_c,"[\\*\\+\\-][5-9][0-9][diATGC]")==FALSE |
+             is.na(novenove$HGVS_c)) #add variants with no HGVS_c
   
   off<-novenove %>%
     filter(str_detect(HGVS_c,"[\\*\\+\\-][5-9][0-9][diATGC]")==TRUE) %>%
